@@ -1,0 +1,142 @@
+{
+  "name": "Sold out events",
+  "permissions": {
+    "network": "Needs to access to sold out events feed"
+  },
+  "options": [
+    {
+      "title": "Sold Out Events Configuration",
+      "type": "section"
+    },
+    {
+      "title": "SoldOut Feed URL",
+      "ui_width": 9,
+      "name": "sold_out_feed_url",
+      "doc_link": true,
+      "type": "string",
+      "default": "http://localhost/"
+    },
+    {
+      "title": "Show today only?",
+      "name": "today_only",
+      "type": "boolean",
+      "ui_width": 3,
+      "hint": "During the festival we only show events today",
+      "default": true
+    },
+    {
+      "title": "Feed update interval",
+      "name": "update_interval",
+      "type": "duration",
+      "ui_width": 4,
+      "hint": "Delay in seconds between polling the feed",
+      "default": 120
+    },
+    {
+      "title": "Page switch time",
+      "name": "switch_time",
+      "type": "duration",
+      "ui_width": 4,
+      "hint": "Duration in seconds to show each page for",
+      "default": 10
+    },
+    {
+      "title": "Events per page",
+      "name": "events_per_page",
+      "type": "integer",
+      "ui_width": 4,
+      "default": 10
+    },
+    {
+      "title": "Content Configuration",
+      "type": "section"
+    },
+    {
+      "title": "No events text",
+      "ui_width": 10,
+      "name": "no_events_text",
+      "type": "string",
+      "default": "There are currently no sold out events"
+    },
+    {
+      "type": "font",
+      "title": "Font",
+      "name": "font",
+      "ui_width": 4,
+      "default": "silkscreen.ttf"
+    },
+    {
+      "title": "Font size",
+      "name": "font_size",
+      "type": "integer",
+      "ui_width": 4,
+      "default": 54
+    },
+    {
+      "title": "Font colour",
+      "name": "font_colour",
+      "type": "color",
+      "ui_width": 4,
+      "default": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "title": "Logo",
+      "ui_width": 4,
+      "name": "logo",
+      "type": "resource",
+      "valid": [
+        "image"
+      ],
+      "default": "empty.png"
+    },
+    {
+      "title": "Margin",
+      "name": "margin",
+      "type": "integer",
+      "ui_width": 4,
+      "default": 40
+    },
+    {
+      "title": "Background colour",
+      "name": "background_colour",
+      "type": "color",
+      "ui_width": 4,
+      "default": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "title": "Screen Configuration",
+      "type": "section"
+    },
+    {
+      "title": "Automatic resolution",
+      "ui_width": 4,
+      "name": "auto_resolution",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "title": "Manual width",
+      "ui_width": 4,
+      "name": "width",
+      "type": "integer",
+      "default": 1920
+    },
+    {
+      "title": "Manual height",
+      "ui_width": 4,
+      "name": "height",
+      "type": "integer",
+      "default": 1080
+    }
+  ]
+}
