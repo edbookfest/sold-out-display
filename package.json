@@ -1,5 +1,7 @@
 {
   "name": "Sold out events",
   "author": "craig@netchaos.net",
-  "desc": "Displays list of sold out events"
+  "desc": "Displays list of sold out events",
+  "repository": "https://github.com/edbookfest/sold-out-display.git",
+  "version": "2.0"
 }
