@@ -23,7 +23,7 @@ def get_soldout(url, today_only):
         for child in xml_root:
             if child.get('Hide') != '1':
                 if child.get('Status') == "SoldOut":
-                    events.append(str(child.get('EventName')))
+                    events.append(child.get('EventName').encode('utf-8'))
         return events
 
     def process_events(xml):
@@ -33,10 +33,10 @@ def get_soldout(url, today_only):
         for child in root:
             if child.get('Hide') != '1':
                 if child.get('Status') == "SoldOut":
-                    if events.count(str(child.get('EventName'))) > 1:
-                        processed_events.append(str(child.get('EventName')) + ' ' + get_event_day(str(child.get('EventDateTime'))))
+                    if events.count(child.get('EventName').encode('utf-8')) > 1:
+                        processed_events.append(child.get('EventName').encode('utf-8') + ' ' + get_event_day(child.get('EventDateTime').encode('utf-8')))
                     else:
-                        processed_events.append(str(child.get('EventName')))
+                        processed_events.append(child.get('EventName').encode('utf-8'))
         processed_events.sort()
         return processed_events
 
