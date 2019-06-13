@@ -1,36 +1,48 @@
 #!/usr/bin/python2.7
+import json
 import os
-import sys
 import time
-from datetime import datetime
+import urllib2
+from httplib import responses
 
-from hosted import CONFIG, NODE
-import importer
+from hosted import config, Node
+from jsonparser import JsonParser
+from log import log
 
-CONFIG.restart_on_update()
+config.restart_on_update()
 
-def set_update_time(val):
-    with open('last_updated.txt', 'w') as f:
-        f.write(str(val))
-        f.close()
-
-def write_to_file(list):
-    with file('soldoutevents.txt.new', 'wb') as f:
-        for event in list:
-            f.write(str(event) + '\n')
-    os.rename("soldoutevents.txt.new", "soldoutevents.txt")
-    print >>sys.stderr, str(len(list)) + " sold out events at " + str(datetime.now().strftime("%H:%M:%S %d %b %Y"))
 
 def main():
     while 1:
-        if os.path.isfile("soldoutevents.txt") == False:
-            write_to_file([])
-        set_update_time('updating now')
-        events = importer.get_soldout(CONFIG['sold_out_feed_url'], int(CONFIG['today_only'] == True))
-        if events is not None:
-            write_to_file(events)
-            set_update_time(datetime.now().strftime("%H:%M:%S %d %b %Y"))
-        time.sleep(int(CONFIG['update_interval']))
+        node = Node(os.environ['NODE'])
+        node.send('/updating:%s' % ".")
+        parser = JsonParser()
+
+        url = config['sold_out_feed_url']
+        log("Updating sold out list from: " + url)
+        try:
+            response = urllib2.urlopen(urllib2.Request(url, None, {'User-Agent': 'SoldOutScreen'}))
+            data = response.read()
+            node.write_json("feed.json", json.loads(data.decode("utf-8")))
+
+            sold_out_events = parser.parse("feed.json", config['today_only'])
+            if sold_out_events is not None:
+                node.write_file('soldoutevents.txt', "\n".join(sold_out_events))
+                log("--------")
+                for line in sold_out_events:
+                    log(line)
+                log("--------")
+                node.send('/updating:%s' % " ")
+
+        except urllib2.HTTPError as e:
+            log("Server responded with: " + str(e.code) + " " + responses[e.code])
+
+        except urllib2.URLError as e:
+            log(e.reason)
+
+        log("Updating again in " + str(config['update_interval']) + " seconds")
+        time.sleep(int(config['update_interval']))
+
 
 if __name__ == "__main__":
     main()

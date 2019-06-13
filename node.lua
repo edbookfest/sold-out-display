@@ -31,28 +31,32 @@ local current_page = 1
 local total_pages = 1
 local next_page = sys.now() + CONFIG.switch_time
 local soldoutevents = {}
+soldoutevents[1] = "Checking for sold out events"
 local magic_dot = " "
 
-util.file_watch("soldoutevents.txt", function(content)
-    soldoutevents = {}
-    if content ~= "" then
-        for event in string.gmatch(content, "[^\r\n]+") do
-            soldoutevents[#soldoutevents + 1] = event
+node.event("content_update", function(filename, file)
+   if filename == "soldoutevents.txt" then
+       soldoutevents = {}
+       local content = resource.load_file(file)
+        if content ~= "" then
+            for event in string.gmatch(content, "[^\r\n]+") do
+                soldoutevents[#soldoutevents + 1] = event
+            end
+            print("There are " .. #soldoutevents .. " sold out events")
         end
-        print("There are " .. #soldoutevents .. " sold out events")
-    end
-    if #soldoutevents == 0 then
-        soldoutevents[#soldoutevents + 1] = CONFIG.no_events_text
-        print("There are no sold out events")
-    end
-    total_pages = math.ceil(#soldoutevents / CONFIG.events_per_page)
-end)
-util.file_watch("last_updated.txt", function(content)
-    magic_dot = " "
-    if content == "updating now" then
-        magic_dot = "."
+        if #soldoutevents == 0 then
+            soldoutevents[#soldoutevents + 1] = CONFIG.no_events_text
+            print("There are no sold out events")
+        end
+        total_pages = math.ceil(#soldoutevents / CONFIG.events_per_page)
     end
 end)
+
+util.data_mapper {
+    ["updating"] = function(value)
+        magic_dot = value
+    end;
+}
 
 local function load_next()
     next_page = sys.now() + CONFIG.switch_time
