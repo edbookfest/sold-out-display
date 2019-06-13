@@ -1,7 +1,8 @@
 #!/usr/bin/python2.7
 import json
 from collections import defaultdict
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
+
 from log import log
 
 
@@ -130,7 +131,8 @@ class JsonParser:
 
         if today_only:
             sold_out_events = filter(lambda event: event.is_sold_out, all_events)
-            return self.__display_for_single_day(sold_out_events, datetime.strptime("2018-08-15", "%Y-%m-%d").date())
+            today = date.today()
+            return self.__display_for_single_day(sold_out_events, today)
         else:
             titles = {}
             for event in all_events:
