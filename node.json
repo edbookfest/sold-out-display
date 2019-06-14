@@ -25,15 +25,15 @@
       "default": true
     },
     {
-      "title": "Feed update interval",
+      "title": "Feed update interval (minutes)",
       "name": "update_interval",
       "type": "duration",
       "ui_width": 4,
-      "hint": "Delay in seconds between polling the feed",
-      "default": 120
+      "hint": "Delay in minutes between polling the feed",
+      "default": 5
     },
     {
-      "title": "Page switch time",
+      "title": "Page switch time (seconds)",
       "name": "switch_time",
       "type": "duration",
       "ui_width": 4,

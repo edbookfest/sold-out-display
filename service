@@ -40,8 +40,8 @@ def main():
         except urllib2.URLError as e:
             log(e.reason)
 
-        log("Updating again in " + str(config['update_interval']) + " seconds")
-        time.sleep(int(config['update_interval']))
+        log("Updating again in " + str(config['update_interval']) + " minutes")
+        time.sleep(int(config['update_interval']) * 60)
 
 
 if __name__ == "__main__":
