@@ -5,16 +5,48 @@
   },
   "options": [
     {
-      "title": "Sold Out Events Configuration",
+      "title": "Feed Configuration",
       "type": "section"
     },
     {
-      "title": "SoldOut Feed URL",
+      "title": "Feed URL",
       "ui_width": 9,
       "name": "sold_out_feed_url",
       "doc_link": true,
       "type": "string",
       "default": "http://localhost/"
+    },
+    {
+      "title": "Update interval",
+      "name": "update_interval",
+      "type": "duration",
+      "ui_width": 3,
+      "hint": "Update frequency in minutes",
+      "default": 5
+    },
+    {
+      "title": "Auth?",
+      "name": "use_auth",
+      "type": "boolean",
+      "ui_width": 2,
+      "hint": "Does the URL require authentication?",
+      "default": true
+    },
+    {
+      "title": "Username",
+      "ui_width": 5,
+      "name": "feed_username",
+      "type": "string"
+    },
+    {
+      "title": "Password",
+      "ui_width": 5,
+      "name": "feed_password",
+      "type": "string"
+    },
+    {
+      "title": "Content Configuration",
+      "type": "section"
     },
     {
       "title": "Show today only?",
@@ -25,12 +57,11 @@
       "default": true
     },
     {
-      "title": "Feed update interval",
-      "name": "update_interval",
-      "type": "duration",
+      "title": "Events per page",
+      "name": "events_per_page",
+      "type": "integer",
       "ui_width": 4,
-      "hint": "Delay in seconds between polling the feed",
-      "default": 120
+      "default": 10
     },
     {
       "title": "Page switch time",
@@ -39,17 +70,6 @@
       "ui_width": 4,
       "hint": "Duration in seconds to show each page for",
       "default": 10
-    },
-    {
-      "title": "Events per page",
-      "name": "events_per_page",
-      "type": "integer",
-      "ui_width": 4,
-      "default": 10
-    },
-    {
-      "title": "Content Configuration",
-      "type": "section"
     },
     {
       "title": "No events text",
