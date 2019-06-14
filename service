@@ -1,4 +1,5 @@
 #!/usr/bin/python2.7
+import base64
 import json
 import os
 import time
@@ -21,7 +22,14 @@ def main():
         url = config['sold_out_feed_url']
         log("Updating sold out list from: " + url)
         try:
-            response = urllib2.urlopen(urllib2.Request(url, None, {'User-Agent': 'SoldOutScreen'}))
+            request = urllib2.Request(url, None, {'User-Agent': 'SoldOutScreen'})
+            if config['use_auth']:
+                log("Authenticating with user: " + config['feed_username'])
+                request.add_header("Authorization", "Basic %s" % base64.b64encode('%s:%s' %
+                                                                                  (config['feed_username'],
+                                                                                   config['feed_password'])
+                                                                                  ).replace('\n', ''))
+            response = urllib2.urlopen(request)
             data = response.read()
             node.write_json("feed.json", json.loads(data.decode("utf-8")))
 
