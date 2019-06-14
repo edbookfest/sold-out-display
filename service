@@ -4,13 +4,24 @@ import json
 import os
 import time
 import urllib2
+from datetime import timedelta, datetime
 from httplib import responses
+
+import pytz
 
 from hosted import config, Node
 from jsonparser import JsonParser
 from log import log
 
 config.restart_on_update()
+
+
+def local_now():
+    now = datetime.utcnow()
+    now = now.replace(tzinfo=pytz.utc)
+    now = now.astimezone(pytz.timezone('Europe/London'))
+    now = now.replace(tzinfo=None)
+    return now
 
 
 def main():
@@ -48,8 +59,10 @@ def main():
         except urllib2.URLError as e:
             log(e.reason)
 
-        log("Updating again in " + str(config['update_interval']) + " minutes")
-        time.sleep(int(config['update_interval']) * 60)
+        update_seconds = int(config['update_interval']) * 60
+        updating_at = local_now() + timedelta(seconds=update_seconds)
+        log("Updating again in %s seconds at %s" % (update_seconds, updating_at.strftime("%H:%M:%S")))
+        time.sleep(update_seconds)
 
 
 if __name__ == "__main__":
