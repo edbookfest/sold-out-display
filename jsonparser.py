@@ -124,10 +124,14 @@ class JsonParser:
 
         all_events = []
         for item in data:
-            event = Event(item)
-            all_events.append(event)
+            try:
+                event = Event(item)
+                all_events.append(event)
+            except ValueError as e:
+                log('%s - %s (%s): %s' % ("Failed to parse event", item["title"], item["id"], e.message))
 
-        log(str(len(all_events)) + " events in feed")
+        log(str(len(data)) + " events in feed")
+        log(str(len(all_events)) + " events parsed successfully")
 
         if today_only:
             sold_out_events = filter(lambda event: event.is_sold_out, all_events)
@@ -137,5 +141,5 @@ class JsonParser:
             titles = {}
             for event in all_events:
                 titles.setdefault(event.title, Collection(event.title)).add(event)
-            log(str(len(titles)) + " unique titles in feed")
+            log(str(len(titles)) + " unique titles found")
             return self.__display_for_multiple_days(titles)
